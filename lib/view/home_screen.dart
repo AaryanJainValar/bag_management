@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 16),
             ElevatedButton.icon(
-              onPressed: fetchProductInfo,
+              onPressed: () => scanBagViewModel.scanBagApi("?bn="+barcodeResult, context),
               icon: Icon(Icons.search),
               label: Text('Submit'),
             ),
