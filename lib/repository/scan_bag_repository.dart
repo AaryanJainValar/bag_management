@@ -16,13 +16,22 @@ class ScanBagRepository {
     }
   }
 
-  // Future<dynamic> signUpApi(dynamic data) async {
-  //   try{
-  //     dynamic response = await _apiServices.getPostApiResponse(AppUrl.registerUrl, data);
-  //     return response;
-  //   }catch(e) {
-  //     throw e;
-  //   }
-  // }
+  Future<dynamic> destinationApi() async {
+    try{
+      dynamic response = await _apiServices.getGetApiResponse(AppUrl.destination);
+      return response;
+    }catch(e) {
+      throw e;
+    }
+  }
+
+  Future<dynamic> workOrderApi() async {
+    try{
+      dynamic response = await _apiServices.getGetApiResponse(AppUrl.workOrder);
+      return response;
+    }catch(e) {
+      throw e;
+    }
+  }
 
 }

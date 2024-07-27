@@ -4,5 +4,9 @@ class AppUrl {
 
   static var bagInfo = '$baseUrl/api/BagInfo';
 
+  static var destination = '$baseUrl/api/Destination';
+
+  static var workOrder = '$baseUrl/api/WorkOrder';
+
 
 }

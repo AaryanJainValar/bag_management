@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/utils.dart';
 import 'detail_screen.dart';
 
 
@@ -14,10 +15,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Variables to hold the barcode and product information
   String barcodeResult = '';
-  Map<String, dynamic> productInfo = {};
-
-
-
 
   // Method to handle API call for fetching product information
   void fetchProductInfo() async {
@@ -31,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    mainContext = context;
     final scanBagViewModel = Provider.of<ScanBagViewModal>(context);
     return Scaffold(
       appBar: AppBar(
@@ -93,7 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
                        return scanBagViewModel.bagList.length == 0 ?
                        Text('No product information available.') :
                        GestureDetector(
-                         onTap: (){
+                         onTap: () async {
+                            scanBagViewModel.destinationApi(context);
+                            scanBagViewModel.workOrderApi(context);
                            Navigator.push(context, MaterialPageRoute(builder: (context){
                              return DetailScreen(
                                bagNumber: scanBagViewModel.bagList[index]['bagNumber'],
