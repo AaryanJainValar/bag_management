@@ -10,7 +10,7 @@ class ScanBagViewModal with ChangeNotifier {
 
   bool loading = false;
   bool signUploading = false;
-  List<GetBagResponse> bagList = [];
+  List<dynamic> bagList = [];
 
 
 

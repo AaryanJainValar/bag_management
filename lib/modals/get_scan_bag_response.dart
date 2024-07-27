@@ -46,3 +46,26 @@ class GetBagResponse {
     return data;
   }
 }
+
+class GetBagResponseList {
+  List<GetBagResponse>? bags;
+
+  GetBagResponseList({this.bags});
+
+  GetBagResponseList.fromJson(List<dynamic> json) {
+    if (json != null) {
+      bags = <GetBagResponse>[];
+      json.forEach((v) {
+        bags!.add(GetBagResponse.fromJson(v));
+      });
+    }
+  }
+
+  List<dynamic> toJson() {
+    List<dynamic> data = <dynamic>[];
+    if (this.bags != null) {
+      data = this.bags!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}

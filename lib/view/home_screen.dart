@@ -12,7 +12,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Variables to hold the barcode and product information
   String barcodeResult = '';
-
   Map<String, dynamic> productInfo = {};
 
 
@@ -74,8 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
-
-
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
@@ -86,23 +83,62 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(height: 8),
-                      // ListView.builder(
-                      //   itemCount: scanBagViewModel.bagList.length,
-                      //   itemBuilder: (context, index) {
-                      //    return scanBagViewModel.bagList.length == 0 ?
-                      //    Text('No product information available.') :
-                      //
-                      // },)
+                      ListView.builder(
+                        itemCount: scanBagViewModel.bagList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                         return scanBagViewModel.bagList.length == 0 ?
+                         Text('No product information available.') :
+                         Card(
+                           shape: RoundedRectangleBorder(
+                             borderRadius: BorderRadius.circular(16),
+                           ),
+                           elevation: 4,
+                           child: Padding(
+                             padding: const EdgeInsets.all(16.0),
+                             child: Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: <Widget>[
+                                 Center(
+                                   child: ClipOval(
+                                     child: Image.network(
+                                       'https://via.placeholder.com/150',
+                                       width: 100,
+                                       height: 100,
+                                       fit: BoxFit.cover,
+                                     ),
+                                   ),
+                                 ),
+                                 SizedBox(height: 16),
+                                 Text('Bag Number: ${scanBagViewModel.bagList[index]['bagNumber']}'),
+                                 SizedBox(height: 8),
+                                 Text('Bagger Number: ${scanBagViewModel.bagList[index]['baggerNumber']}'),
+                                 SizedBox(height: 8),
+                                 Text('Event DateTime: ${scanBagViewModel.bagList[index]['eventDateTime']}'),
+                                 SizedBox(height: 8),
+                                 Text('Feed Hopper Number: ${scanBagViewModel.bagList[index]['feedHopperNumber']}'),
+                                 SizedBox(height: 8),
+                                 Text('Reason Code: ${scanBagViewModel.bagList[index]['reasonCode']}'),
+                                 SizedBox(height: 8),
+                                 Text('Description: ${scanBagViewModel.bagList[index]['description']}'),
+                                 SizedBox(height: 8),
+                                 Text('Source of Material: ${scanBagViewModel.bagList[index]['sourceOfMaterial']}'),
 
-                      if (productInfo.isNotEmpty) ...[
-                        Text('Product Name: ${productInfo['ProductName']}'),
-                        SizedBox(height: 4),
-                        Text('Product Description: ${productInfo['ProductDescription']}'),
-                        SizedBox(height: 4),
-                        Text('Weight: ${productInfo['Weight']}'),
-                      ] else ...[
-                        Text('No product information available.'),
-                      ],
+                               ],
+                             ),
+                           ),
+                         );
+                      },)
+
+                      // if (productInfo.isNotEmpty) ...[
+                      //   Text('Product Name: ${productInfo['ProductName']}'),
+                      //   SizedBox(height: 4),
+                      //   Text('Product Description: ${productInfo['ProductDescription']}'),
+                      //   SizedBox(height: 4),
+                      //   Text('Weight: ${productInfo['Weight']}'),
+                      // ] else ...[
+                      //   Text('No product information available.'),
+                      // ],
                     ],
                   ),
                 ),
