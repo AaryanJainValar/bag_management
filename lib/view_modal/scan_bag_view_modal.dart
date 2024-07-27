@@ -16,15 +16,8 @@ class ScanBagViewModal with ChangeNotifier {
   List<dynamic> destinationList = [];
   List<dynamic> workOrderList = [];
 
-  setLoading(bool value) {
-    loading = value;
-    notifyListeners();
-  }
-
   Future<void> scanBagApi(dynamic data, BuildContext context) async {
-    setLoading(true);
     _myRepo.bagInfoApi(data).then((value) {
-      setLoading(false);
       if (value.toString().isNotEmpty) {
         bagList = value;
         notifyListeners();
@@ -33,7 +26,6 @@ class ScanBagViewModal with ChangeNotifier {
         print(value.toString());
       }
     }).onError((error, stackTrace) {
-      setLoading(false);
       if (kDebugMode) {
         Utils.snackBar(error.toString(), context);
         print(error.toString());
@@ -42,9 +34,7 @@ class ScanBagViewModal with ChangeNotifier {
   }
 
   Future<void> destinationApi(BuildContext context) async {
-    setLoading(true);
     await _myRepo.destinationApi().then((value) {
-      setLoading(false);
       if (value.toString().isNotEmpty) {
         destinationList = value;
         notifyListeners();
@@ -53,7 +43,6 @@ class ScanBagViewModal with ChangeNotifier {
         print(value.toString());
       }
     }).onError((error, stackTrace) {
-      setLoading(false);
       if (kDebugMode) {
         Utils.snackBar(error.toString(), context);
         print(error.toString());
@@ -62,9 +51,7 @@ class ScanBagViewModal with ChangeNotifier {
   }
 
   Future<void> workOrderApi(BuildContext context) async {
-    setLoading(true);
     await _myRepo.workOrderApi().then((value) {
-      setLoading(false);
       if (value.toString().isNotEmpty) {
         workOrderList = value;
         notifyListeners();
@@ -73,7 +60,6 @@ class ScanBagViewModal with ChangeNotifier {
         print(value.toString());
       }
     }).onError((error, stackTrace) {
-      setLoading(false);
       if (kDebugMode) {
         Utils.snackBar(error.toString(), context);
         print(error.toString());
@@ -82,16 +68,10 @@ class ScanBagViewModal with ChangeNotifier {
   }
 
   Future<void> bagRequestApi(dynamic data, BuildContext context) async {
-    setLoading(true);
-    await _myRepo.bagRequestApi(data).then((value) {
-      setLoading(false);
-      if (value.toString().isNotEmpty) {
-        print('abc =$value');
-        // workOrderList = value;
-        // notifyListeners();
-      }
-    }).onError((error, stackTrace) {
-      setLoading(false);
+    await _myRepo
+        .bagRequestApi(data)
+        .then((value) {})
+        .onError((error, stackTrace) {
       if (kDebugMode) {
         print(error.toString());
       }

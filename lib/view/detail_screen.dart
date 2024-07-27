@@ -20,9 +20,10 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  String? _selectedItem1;
-  String? _selectedItem2;
-  List<String> _dropdownItems1 = [];
+  String? _selectedDestination;
+  String? _selectedWorkOrder;
+  String? _selectedDestinationCode;
+  List<Map<String, String>> _dropdownItems1 = [];
   List<String> _dropdownItems2 = [];
 
   @override
@@ -34,7 +35,10 @@ class _DetailScreenState extends State<DetailScreen> {
       await scanBagViewModel.destinationApi(mainContext);
       await scanBagViewModel.workOrderApi(mainContext);
       _dropdownItems1 = scanBagViewModel.destinationList
-          .map((item) => item['destination'] as String)
+          .map((item) => {
+                'destination': item['destination'] as String,
+                'destinationCode': item['destinationCode'] as String
+              })
           .toList();
       _dropdownItems2 = scanBagViewModel.workOrderList
           .map((item) => item['workOrder'] as String)
@@ -45,12 +49,12 @@ class _DetailScreenState extends State<DetailScreen> {
 
   void _onBagRequestPressed(ScanBagViewModal scanBagViewModel, String bagNumber,
       String sourceOfMaterial, String destination, String weight) {
-    if (_selectedItem1 != null || _selectedItem2 != null) {
+    if (_selectedDestination != null && _selectedWorkOrder != null) {
       Map data = {
         "bagNumber": bagNumber,
         "sourceOfMaterial": sourceOfMaterial,
-        "destination": destination,
-        "weight": weight
+        "destination": _selectedDestinationCode ?? "",
+        "weight": double.tryParse(weight)
       };
       print("sc = $data");
       scanBagViewModel.bagRequestApi(data, context);
@@ -87,22 +91,26 @@ class _DetailScreenState extends State<DetailScreen> {
               _buildDropdown(
                 context,
                 "Select Work Order",
-                _selectedItem2,
+                _selectedWorkOrder,
                 _dropdownItems2,
                 (String? newValue) {
                   setState(() {
-                    _selectedItem2 = newValue;
+                    _selectedWorkOrder = newValue;
                   });
                 },
               ),
-              _buildDropdown(
+              _buildDestinationDropdown(
                 context,
                 "Select Destination",
-                _selectedItem1,
+                _selectedDestination,
                 _dropdownItems1,
                 (String? newValue) {
                   setState(() {
-                    _selectedItem1 = newValue;
+                    _selectedDestination = newValue;
+                    _selectedDestinationCode = _dropdownItems1.firstWhere(
+                        (item) =>
+                            item['destination'] ==
+                            _selectedDestination)?['destinationCode'];
                   });
                 },
               ),
@@ -112,7 +120,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   Provider.of<ScanBagViewModal>(context, listen: false),
                   widget.bagNumber,
                   widget.sourceOfMaterial,
-                  _selectedItem1 ?? "",
+                  _selectedDestination ?? "",
                   widget.weight,
                 ),
                 child: const Text("Bag Request"),
@@ -188,6 +196,57 @@ class _DetailScreenState extends State<DetailScreen> {
                 value: value,
                 child: Text(
                   value,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black,
+                  ),
+                ),
+              );
+            }).toList(),
+            isExpanded: true,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDestinationDropdown(
+    BuildContext context,
+    String hint,
+    String? selectedItem,
+    List<Map<String, String>> items,
+    ValueChanged<String?> onChanged,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(color: Colors.grey),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 1.0,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            hint: Text(hint),
+            value: selectedItem,
+            onChanged: onChanged,
+            dropdownColor: Colors.white,
+            items:
+                items.map<DropdownMenuItem<String>>((Map<String, String> item) {
+              return DropdownMenuItem<String>(
+                value: item['destination'],
+                child: Text(
+                  item['destination'] ?? '',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.normal,

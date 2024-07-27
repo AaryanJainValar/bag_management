@@ -1,14 +1,12 @@
-
-
-
 import 'package:bag_manage/data/response/status.dart';
 
 class ApiResponse<T> {
-  Status? status ;
+  Status? status;
+
   T? data;
   String? message;
 
-  ApiResponse(this.status , this.data, this.message);
+  ApiResponse(this.status, this.data, this.message);
 
   ApiResponse.loading() : status = Status.LOADING;
 

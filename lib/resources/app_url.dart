@@ -1,4 +1,3 @@
-
 class AppUrl {
   static var baseUrl = 'https://recapi.perfinfo.us/recapi';
 
@@ -9,6 +8,4 @@ class AppUrl {
   static var workOrder = '$baseUrl/api/WorkOrder';
 
   static var bagRequest = '$baseUrl/api/BagRequest';
-
-
 }

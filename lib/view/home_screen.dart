@@ -107,15 +107,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Center(
+                                        const Center(
                                           child: ClipOval(
-                                            child: Image.network(
-                                              'https://via.placeholder.com/150',
-                                              width: 100,
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                                              child: Icon(
+                                            Icons.shopping_bag,
+                                            size: 100,
+                                            color: Colors.grey,
+                                            // fit: BoxFit.cover,
+                                          )),
                                         ),
                                         const SizedBox(height: 16),
                                         Text(

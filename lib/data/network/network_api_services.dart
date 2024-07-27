@@ -6,15 +6,13 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkApiService extends BaseApiServices {
-
   @override
   Future getGetApiResponse(String url) async {
     dynamic responseJson;
-    try{
-
-      final response = await http.get(Uri.parse(url)).timeout(Duration(seconds: 10));
+    try {
+      final response =
+          await http.get(Uri.parse(url)).timeout(Duration(seconds: 10));
       responseJson = returnResponse(response);
-
     } on SocketException {
       throw FetchDataExceptions('No Internet Connection');
     }
@@ -24,20 +22,24 @@ class NetworkApiService extends BaseApiServices {
   @override
   Future getPostApiResponse(String url, dynamic data) async {
     dynamic responseJson;
-    try{
-
-      Response response = await http.post(Uri.parse(url), body: data).timeout(Duration(seconds: 10));
+    try {
+      Response response = await http
+          .post(Uri.parse(url),
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: json.encode(data))
+          .timeout(Duration(seconds: 10));
       responseJson = returnResponse(response);
-
-    }   on SocketException {
+    } on SocketException {
       throw FetchDataExceptions('No Internet Connection');
     }
     return responseJson;
   }
 
   dynamic returnResponse(http.Response response) {
-    switch(response.statusCode){
-      case 200 :
+    switch (response.statusCode) {
+      case 200:
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
 
@@ -47,10 +49,11 @@ class NetworkApiService extends BaseApiServices {
       case 404:
         throw UnauthorisedException(response.body.toString());
 
-        default:
-        throw FetchDataExceptions('Error occured while communication with server'+
-        'with status code' + response.statusCode.toString());
+      default:
+        throw FetchDataExceptions(
+            'Error occured while communication with server' +
+                'with status code' +
+                response.statusCode.toString());
     }
   }
-
 }
