@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Variables to hold the barcode and product information
   String barcodeResult = '';
+
   Map<String, dynamic> productInfo = {};
 
 
@@ -73,6 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
+
+
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
