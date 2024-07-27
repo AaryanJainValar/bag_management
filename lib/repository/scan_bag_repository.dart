@@ -34,4 +34,13 @@ class ScanBagRepository {
     }
   }
 
+  Future<dynamic> bagRequestApi(dynamic data) async {
+    try{
+      dynamic response = await _apiServices.getPostApiResponse(AppUrl.bagRequest, data);
+      return response;
+    }catch(e) {
+      throw e;
+    }
+  }
+
 }

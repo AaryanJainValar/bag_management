@@ -1,4 +1,3 @@
-import 'package:bag_manage/utils/utils.dart';
 import 'package:bag_manage/view/home_screen.dart';
 import 'package:bag_manage/view_modal/scan_bag_view_modal.dart';
 import 'package:flutter/material.dart';

@@ -8,5 +8,7 @@ class AppUrl {
 
   static var workOrder = '$baseUrl/api/WorkOrder';
 
+  static var bagRequest = '$baseUrl/api/BagRequest';
+
 
 }
