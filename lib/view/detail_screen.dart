@@ -27,9 +27,7 @@ class _DetailScreenState extends State<DetailScreen> {
       _dropdownItems2 = scanBagViewModal.workOrderList.map((item) => item['workOrder'] as String).toList();
       setState(() {});
     });
-    
     super.initState();
-   
   }
 
   @override
@@ -63,84 +61,16 @@ class _DetailScreenState extends State<DetailScreen> {
                 },
               ),
 
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 8.0),
-              //   child: Container(
-              //     width: MediaQuery.of(context).size.width * 0.8, // 80% of the screen width
-              //     padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-              //     decoration: BoxDecoration(
-              //       color: Colors.white,
-              //       borderRadius: BorderRadius.circular(10.0),
-              //       border: Border.all(color: Colors.grey),
-              //       boxShadow: [
-              //         BoxShadow(
-              //           color: Colors.black12,
-              //           blurRadius: 1.0,
-              //           offset: Offset(0, 2),
-              //         ),
-              //       ],
-              //     ),
-              //     child:
-              //
-              //     // DropdownButtonHideUnderline(
-              //     //   child: DropdownButton<String>(
-              //     //     hint: Text("Select Item"),
-              //     //     value: _selectedItem1,
-              //     //     onChanged: (String? newValue) {
-              //     //       setState(() {
-              //     //         _selectedItem1 = newValue!;
-              //     //       });
-              //     //     },
-              //     //     dropdownColor: Colors.white,
-              //     //       // .toList()
-              //     //     items: _dropdownItems1.map((item) => item['destination']!).toList()<DropdownMenuItem<String>>((String value) {
-              //     //       return DropdownMenuItem<String>(
-              //     //         value: value,
-              //     //         child: Text(value),
-              //     //       );
-              //     //     }).toList(),
-              //     //     isExpanded: true,
-              //     //   ),
-              //     // ),
-              //   ),
-              // ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.8, // 80% of the screen width
-                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(color: Colors.grey),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 1.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      hint: Text("Select Item"),
-                      value: _selectedItem2,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedItem2 = newValue!;
-                        });
-                      },
-                      dropdownColor: Colors.white,
-                      items: _dropdownItems2.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      isExpanded: true,
-                    ),
-                  ),
-                ),
+              _buildDropdown(
+                context,
+                "Select Item",
+                _selectedItem2,
+                _dropdownItems2,
+                    (String? newValue) {
+                  setState(() {
+                    _selectedItem2 = newValue;
+                  });
+                },
               ),
             ],
           ),
@@ -158,34 +88,37 @@ class _DetailScreenState extends State<DetailScreen> {
       List<String> items,
       ValueChanged<String?> onChanged,
       ) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.8, // 80% of the screen width
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-        border: Border.all(color: Colors.grey),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 1.0,
-            offset: Offset(0, 2),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.8, // 80% of the screen width
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(color: Colors.grey),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 1.0,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            hint: Text(hint),
+            value: selectedItem,
+            onChanged: onChanged,
+            dropdownColor: Colors.white,
+            items: items.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            isExpanded: true,
           ),
-        ],
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          hint: Text(hint),
-          value: selectedItem,
-          onChanged: onChanged,
-          dropdownColor: Colors.white,
-          items: items.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          isExpanded: true,
         ),
       ),
     );
