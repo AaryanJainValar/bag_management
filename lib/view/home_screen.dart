@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 16),
               TextField(
+                keyboardType: TextInputType.number,
                 onChanged: (value) {
                   setState(() {
                     barcodeResult = value;
