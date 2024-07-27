@@ -12,6 +12,8 @@ class ScanBagViewModal with ChangeNotifier {
   bool signUploading = false;
   List<GetBagResponse> bagList = [];
 
+
+
   setLoading(bool value) {
     loading = value;
     notifyListeners();
