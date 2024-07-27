@@ -54,5 +54,3 @@ class Utils {
   }
 
 }
-
-late BuildContext mainContext;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import '../utils/utils.dart';
 import 'detail_screen.dart';
 
@@ -92,9 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
                        Text('No product information available.') :
                        GestureDetector(
                          onTap: () async {
-                            scanBagViewModel.destinationApi(context);
-                            scanBagViewModel.workOrderApi(context);
-                           Navigator.push(context, MaterialPageRoute(builder: (context){
+
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
                              return DetailScreen(
                                bagNumber: scanBagViewModel.bagList[index]['bagNumber'],
                                sourceOfMaterial: scanBagViewModel.bagList[index]['sourceOfMaterial'],

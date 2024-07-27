@@ -1,15 +1,14 @@
 
-import 'package:bag_manage/modals/get_scan_bag_response.dart';
 import 'package:bag_manage/repository/scan_bag_repository.dart';
 import 'package:bag_manage/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../main.dart';
 
-ScanBagViewModal scanBagViewModal = Provider.of<ScanBagViewModal>(mainContext);
+ScanBagViewModal scanBagViewModal = Provider.of<ScanBagViewModal>(mainContext,listen: false);
 class ScanBagViewModal with ChangeNotifier {
   final _myRepo = ScanBagRepository();
-
   bool loading = false;
   bool signUploading = false;
   List<dynamic> bagList = [];
@@ -54,7 +53,7 @@ class ScanBagViewModal with ChangeNotifier {
 
   Future<void> destinationApi(BuildContext context) async {
     setLoading(true);
-    _myRepo.destinationApi().then((value){
+    await _myRepo.destinationApi().then((value){
       setLoading(false);
       print("response = $value" );
       if(value.toString().isNotEmpty) {
@@ -77,7 +76,7 @@ class ScanBagViewModal with ChangeNotifier {
 
   Future<void> workOrderApi(BuildContext context) async {
     setLoading(true);
-    _myRepo.workOrderApi().then((value){
+    await _myRepo.workOrderApi().then((value){
       setLoading(false);
       print("response = $value" );
       if(value.toString().isNotEmpty) {

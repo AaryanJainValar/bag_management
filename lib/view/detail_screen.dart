@@ -1,6 +1,8 @@
+import 'package:bag_manage/main.dart';
 import 'package:bag_manage/utils/utils.dart';
 import 'package:bag_manage/view_modal/scan_bag_view_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DetailScreen extends StatefulWidget {
   String bagNumber;
@@ -22,9 +24,13 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
+
     Future.microtask(()async{
-      _dropdownItems1 = scanBagViewModal.destinationList.map((item) => item['destination'] as String).toList();
-      _dropdownItems2 = scanBagViewModal.workOrderList.map((item) => item['workOrder'] as String).toList();
+      final scanBagViewModel = Provider.of<ScanBagViewModal>(mainContext,listen: false);
+      await scanBagViewModel.destinationApi(mainContext);
+      await scanBagViewModel.workOrderApi(mainContext);
+      _dropdownItems1 = await scanBagViewModal.destinationList.map((item) => item['destination'] as String).toList();
+      _dropdownItems2 = await scanBagViewModal.workOrderList.map((item) => item['workOrder'] as String).toList();
       setState(() {});
     });
     super.initState();
