@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     mainContext = context;
     final scanBagViewModel = Provider.of<ScanBagViewModal>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Information'),
@@ -30,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               ElevatedButton.icon(
-                onPressed: () => scanBarcode(
-                  scanBagViewModel,
-                ),
+                onPressed: () => scanBarcode(scanBagViewModel),
                 icon: const Icon(Icons.camera_alt),
                 label: const Text('Scan Barcode'),
               ),
@@ -80,68 +79,69 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: scanBagViewModel.bagList.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return scanBagViewModel.bagList.isEmpty
-                            ? const Text('No product information available.')
-                            : GestureDetector(
-                                onTap: () async {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return DetailScreen(
-                                      bagNumber: scanBagViewModel.bagList[index]
-                                          ['bagNumber'],
-                                      sourceOfMaterial: scanBagViewModel
-                                          .bagList[index]['sourceOfMaterial'],
-                                      weight: scanBagViewModel.bagList[index]
-                                          ['weight'],
-                                    );
-                                  }));
-                                },
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  elevation: 4,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        const Center(
-                                          child: ClipOval(
-                                              child: Icon(
-                                            Icons.shopping_bag,
-                                            size: 100,
-                                            color: Colors.grey,
-                                            // fit: BoxFit.cover,
-                                          )),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Text(
-                                            'Bag Number: ${scanBagViewModel.bagList[index]['bagNumber']}'),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                            'Bagger Number: ${scanBagViewModel.bagList[index]['baggerNumber']}'),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                            'Event DateTime: ${scanBagViewModel.bagList[index]['eventDateTime']}'),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                            'Feed Hopper Number: ${scanBagViewModel.bagList[index]['feedHopperNumber']}'),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                            'Reason Code: ${scanBagViewModel.bagList[index]['reasonCode']}'),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                            'Description: ${scanBagViewModel.bagList[index]['description']}'),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                            'Source of Material: ${scanBagViewModel.bagList[index]['sourceOfMaterial']}'),
-                                      ],
+                        if (scanBagViewModel.bagList.isEmpty) {
+                          return const Text(
+                              'No product information available.');
+                        } else {
+                          return GestureDetector(
+                            onTap: () async {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return DetailScreen(
+                                  bagNumber: scanBagViewModel.bagList[index]
+                                      ['bagNumber'],
+                                  sourceOfMaterial: scanBagViewModel
+                                      .bagList[index]['sourceOfMaterial'],
+                                  weight: scanBagViewModel.bagList[index]
+                                      ['weight'],
+                                );
+                              }));
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 4,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    const Center(
+                                      child: ClipOval(
+                                          child: Icon(
+                                        Icons.shopping_bag,
+                                        size: 100,
+                                        color: Colors.grey,
+                                      )),
                                     ),
-                                  ),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                        'Bag Number: ${scanBagViewModel.bagList[index]['bagNumber']}'),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        'Bagger Number: ${scanBagViewModel.bagList[index]['baggerNumber']}'),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        'Event DateTime: ${scanBagViewModel.bagList[index]['eventDateTime']}'),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        'Feed Hopper Number: ${scanBagViewModel.bagList[index]['feedHopperNumber']}'),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        'Reason Code: ${scanBagViewModel.bagList[index]['reasonCode']}'),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        'Description: ${scanBagViewModel.bagList[index]['description']}'),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                        'Source of Material: ${scanBagViewModel.bagList[index]['sourceOfMaterial']}'),
+                                  ],
                                 ),
-                              );
+                              ),
+                            ),
+                          );
+                        }
                       },
                     )
                   ],
@@ -154,16 +154,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-// Method to handle barcode scanning
+  // Method to handle barcode scanning
   Future<void> scanBarcode(ScanBagViewModal scanBagViewModel) async {
-    barcodeResult = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-    if (kDebugMode) {
-      print("abc12 = $barcodeResult");
-    }
+    try {
+      barcodeResult = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      if (kDebugMode) {
+        print("abc12 = $barcodeResult");
+      }
 
-    if (barcodeResult.isNotEmpty) {
-      scanBagViewModel.scanBagApi("?bn=$barcodeResult", context);
+      if (barcodeResult != '-1') {
+        scanBagViewModel.scanBagApi("?bn=$barcodeResult", context);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error scanning barcode: $e");
+      }
     }
   }
 }
